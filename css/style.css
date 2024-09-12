@@ -4,25 +4,34 @@
   box-sizing: border-box;
 }
 
+:root {
+  --light-grey:#D9D9D9;
+  --text-color: #FFFFFF;
+  --aqua: #38D0CE;
+  --dark-grey:#696767;
+  --card-bg-color: #A19F9F;
+}
+
 body {
   font-family: sans-serif;
   margin: 0px;
   padding: 0px;
-  font-family: "open-sans", system-ui;
+  font-family: "Pixelify Sans", system-ui;
+  background-color: #3e3c3c;
 }
 
-header{
-  background-color: #093145;
+header {
+  background-color: var(--dark-grey);
   margin: 0px;
-  color: white;
+  color: var(--aqua);
   display: flex;
   text-align: center;
   justify-content: center;
   font-size: 15px;
 }
 
-#timer{
-  background-color: rgb(161, 158, 158);
+#timer {
+  background-color:var(--light-grey);
   margin: 25px auto;
   display: flex;
   width: 70%;
@@ -32,24 +41,21 @@ header{
 
 h1 {
   text-align: center;
-  letter-spacing: 0.80em;
-}
-
-.aside{
-  background-color: lightblue;
+  letter-spacing: 0.15em;
 }
 
 .container {
   width: 70%;
-  padding: 10px;
+  padding: 20px;
   margin: 25px auto;
-  background-color: rgb(161, 158, 158);
+  background-color: var(--light-grey);
   border: 2px solid black;
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-between; /* This ensures spacing between boxes */
+  justify-content: space-between;
   align-items: flex-start;
 }
+
 .box {
   display: block;
   float: left;
@@ -59,7 +65,7 @@ h1 {
   cursor: pointer;
   object-fit: cover;
   border-radius: 8px;
-  background-color: #093145;
+  background-color: var(--card-bg-color);
   text-align: center;
   line-height: 200px;
   font-size: 150px;
