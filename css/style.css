@@ -1,0 +1,73 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: sans-serif;
+  margin: 0px;
+  padding: 0px;
+  font-family: "Pixelify Sans", system-ui;
+}
+
+header{
+  background-color: #093145;
+  margin: 0px;
+  color: white;
+  display: flex;
+  text-align: center;
+  justify-content: center;
+}
+
+#timer{
+  background-color: rgb(161, 158, 158);
+  margin: 25px auto;
+  display: flex;
+  width: 70%;
+  text-align: center;
+  justify-content: center;
+}
+
+h1 {
+  text-align: center;
+  letter-spacing: 0.25em;
+}
+
+.aside{
+  background-color: lightblue;
+}
+
+.container {
+  width: 70%;
+  padding: 10px;
+  margin: 25px auto;
+  background-color: rgb(161, 158, 158);
+  border: 2px solid black;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between; /* This ensures spacing between boxes */
+  align-items: flex-start;
+}
+.box {
+  display: block;
+  float: left;
+  width: 31%;
+  height: 200px;
+  margin: 1%;
+  cursor: pointer;
+  object-fit: cover;
+  border-radius: 8px;
+  background-color: #093145;
+  text-align: center;
+  line-height: 200px;
+  font-size: 150px;
+  color: whitesmoke;
+  
+}
+
+@media (max-width: 740px) {
+  .box {
+    width: 48%;
+  }
+}
