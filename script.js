@@ -1,5 +1,32 @@
 const container = document.querySelector('.container');
 
+
+function startTimer(){
+    let timeRemaining = 120; //2 minutes in seconds
+    const timerDisplay = document.querySelector('#timer h3');
+
+    const timerInterval = setInterval(function(){
+
+        //Convert time into minutes and seconds for accurate display
+        const minutes = Math.floor(timeRemaining/60);
+        const seconds = timeRemaining % 60;
+
+        const formattedMinutes = minutes.toString().padStart(2, '0');
+        const formattedSeconds = seconds.toString().padStart(2, '0');
+
+        // Update the timer display
+        timerDisplay.textContent = `Time Left: ${formattedMinutes}:${formattedSeconds}`;
+
+        timeRemaining--;
+
+        if(timeRemaining == 0){
+            clearInterval(timerInterval);
+            timerDisplay.textContent = `Times up`;
+        }
+
+    }, 1000);
+};
+
 // box object
 const BoxElements = {
     boxes: [],
@@ -81,6 +108,7 @@ window.onload = function() {
             localStorage.setItem('player', JSON.stringify(player));
         }
         modal.style.display = 'none';
+        startTimer();
     };
 
     // Optionally, hide the modal when the user clicks anywhere outside of the modal
