@@ -72,6 +72,73 @@ h1 {
   
 }
 
+/* Modal background */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0,0,0,0.5); 
+}
+
+/* Modal content */
+.modal-content {
+  background-color: #fefefe;
+  margin: 10% auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%;
+  max-width: 500px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2); 
+  text-align: center;
+}
+
+/* Header inside modal */
+.modal-content h2 {
+  margin-top: 0;
+  font-size: 24px;
+}
+
+/* Paragraph inside modal */
+.modal-content p {
+  font-size: 16px;
+  margin-bottom: 20px;
+}
+
+/* Input field */
+#playerName {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  width: calc(100% - 22px);
+  margin-bottom: 20px;
+}
+
+/* Start button */
+.start-btn {
+  background-color: #093145;
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.start-btn:hover {
+  background-color: #091145;
+}
+
+
 @media (max-width: 740px) {
   .box {
     width: 48%;
