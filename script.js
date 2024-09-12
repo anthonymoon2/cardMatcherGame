@@ -59,29 +59,46 @@ function createRandomElements(numberOfBoxes){
         numBoxArray.splice(randomIndex, 1);
         
         // create div box and add to container
-        let boxElement = document.createElement("div");
-        boxElement.setAttribute("data-number", randomNum);
-        boxElement.setAttribute("data-state", "hidden");
-        boxElement.classList.add("box");
-        container.appendChild(boxElement);
+        let boxContainer = document.createElement("div");
+        let boxFront = document.createElement("div");
+        let boxBack = document.createElement("div");
+
+        // add front and back divs to box container
+        boxContainer.appendChild(boxFront);
+        boxContainer.appendChild(boxBack);
+
+        // add class list for css from style.css
+        boxContainer.classList.add("boxContainer");
+        boxFront.classList.add("boxFront");
+        boxBack.classList.add("boxBack");
+
+        boxContainer.setAttribute("data-number", randomNum);
+        boxContainer.setAttribute("data-state", "hidden");
+        container.appendChild(boxContainer);
 
         numberOfBoxes--;
     }
 }
 
 container.addEventListener('click', function (event) {
-  const element = event.target;
+  const element = event.target.closest('.boxContainer');
 
-  const state = element.getAttribute('data-state');
-  const number = element.getAttribute('data-number');
-
-  if (state === 'hidden'){
-    element.setAttribute('data-state', "shown");
-    element.textContent = number;
-    console.log(state);
-  } else {
-    element.setAttribute('data-state', "hidden");
-    element.textContent = '';
+  if (element.matches(".boxContainer")){
+    const state = element.getAttribute('data-state');
+    const number = element.getAttribute('data-number');
+    const front = element.querySelector('.boxFront');
+    const back = element.querySelector('.boxBack');
+  
+    if (state === 'hidden'){
+      element.classList.add("flipped");
+      front.textContent = '';
+      back.textContent = number;
+      element.setAttribute('data-state', "shown");
+    } else {
+      element.classList.remove("flipped");
+      front.textContent = '';
+      element.setAttribute('data-state', "hidden");
+    }
   }
 });
 
