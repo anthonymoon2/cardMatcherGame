@@ -4,24 +4,33 @@
   box-sizing: border-box;
 }
 
+:root {
+  --light-grey:#D9D9D9;
+  --text-color: #FFFFFF;
+  --aqua: #38D0CE;
+  --dark-grey:#696767;
+  --card-bg-color: #A19F9F;
+}
+
 body {
   font-family: sans-serif;
   margin: 0px;
   padding: 0px;
   font-family: "Pixelify Sans", system-ui;
+  background-color: #3e3c3c;
 }
 
-header{
-  background-color: #093145;
+header {
+  background-color: var(--dark-grey);
   margin: 0px;
-  color: white;
+  color: var(--aqua);
   display: flex;
   text-align: center;
   justify-content: center;
 }
 
-#timer{
-  background-color: rgb(161, 158, 158);
+#timer {
+  background-color:var(--light-grey);
   margin: 25px auto;
   display: flex;
   width: 70%;
@@ -31,24 +40,21 @@ header{
 
 h1 {
   text-align: center;
-  letter-spacing: 0.25em;
-}
-
-.aside{
-  background-color: lightblue;
+  letter-spacing: 0.15em;
 }
 
 .container {
   width: 70%;
-  padding: 10px;
+  padding: 20px;
   margin: 25px auto;
-  background-color: rgb(161, 158, 158);
+  background-color: var(--light-grey);
   border: 2px solid black;
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-between; /* This ensures spacing between boxes */
+  justify-content: space-between;
   align-items: flex-start;
 }
+
 .box {
   display: block;
   float: left;
@@ -58,12 +64,79 @@ h1 {
   cursor: pointer;
   object-fit: cover;
   border-radius: 8px;
-  background-color: #093145;
+  background-color: var(--card-bg-color);
   text-align: center;
   line-height: 200px;
   font-size: 150px;
   color: whitesmoke;
 }
+
+/* Modal background */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0,0,0,0.5); 
+}
+
+/* Modal content */
+.modal-content {
+  background-color: #fefefe;
+  margin: 10% auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%;
+  max-width: 500px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2); 
+  text-align: center;
+}
+
+/* Header inside modal */
+.modal-content h2 {
+  margin-top: 0;
+  font-size: 24px;
+}
+
+/* Paragraph inside modal */
+.modal-content p {
+  font-size: 16px;
+  margin-bottom: 20px;
+}
+
+/* Input field */
+#playerName {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  width: calc(100% - 22px);
+  margin-bottom: 20px;
+}
+
+/* Start button */
+.start-btn {
+  background-color: #093145;
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.start-btn:hover {
+  background-color: #091145;
+}
+
 
 @media (max-width: 740px) {
   .box {
