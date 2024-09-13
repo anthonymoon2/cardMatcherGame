@@ -30,7 +30,7 @@ function startTimer(){
 
 // box object
 const BoxElements = {
-    boxes: [],
+  boxes: [],
 }
 
 // randomizes numbers behind boxes and adds to container
@@ -80,6 +80,7 @@ function createRandomElements(numberOfBoxes){
         boxFront.classList.add("boxFront");
         boxBack.classList.add("boxBack");
 
+        boxFront.textContent = '?';
         boxContainer.setAttribute("data-number", randomNum);
         boxContainer.setAttribute("data-state", "hidden");
         container.appendChild(boxContainer);
@@ -114,12 +115,12 @@ container.addEventListener('click', function (event) {
   
     if (state === 'hidden'){
       element.classList.add("flipped");
-      front.textContent = '';
+      front.textContent = '?';
       back.textContent = number;
       element.setAttribute('data-state', "shown");
     } else {
       element.classList.remove("flipped");
-      front.textContent = '';
+      front.textContent = '?';
       element.setAttribute('data-state', "hidden");
     }
 
