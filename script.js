@@ -1,6 +1,34 @@
 const container = document.querySelector('.container');
 
+window.onload = function() {
+    // create boxes on load
+    createRandomElements(6);
 
+    // Get modal elements
+    var modal = new bootstrap.Modal(document.getElementById('exampleModal')); // Initialize Bootstrap modal
+    var startGameBtn = document.getElementById('startGameBtn');
+    var playerNameInput = document.getElementById('playerName');
+
+    // Display the modal when the page loads
+    modal.show();
+
+    // Hide the modal and create player object when the 'Start Game' button is clicked
+    startGameBtn.onclick = function() {
+        var playerName = playerNameInput.value.trim();
+        if (playerName) {
+            var player = {
+                name: playerName,
+                fastestTime: null // Initialize fastest time as null
+            };
+            // Store the player object in localStorage
+            localStorage.setItem('player', JSON.stringify(player));
+        }
+        modal.hide(); // Hide the modal using Bootstrap's API
+
+        // start game
+        game();
+    };
+};
 
 function startTimer(){
     let timeRemaining = 120; //2 minutes in seconds
@@ -27,11 +55,6 @@ function startTimer(){
 
     }, 1000);
 };
-
-// box object
-const BoxElements = {
-  boxes: [],
-}
 
 // randomizes numbers behind boxes and adds to container
 function createRandomElements(numberOfBoxes){
@@ -115,11 +138,13 @@ container.addEventListener('click', function (event) {
   }
 });
 
+// function which flips cards on start for two seconds
 function startingFlip(){
     const allCards = document.querySelectorAll(".boxContainer");
     const front = document.querySelectorAll(".boxFront");
     const back = document.querySelectorAll(".boxBack");
 
+    // for loop to flip all cards
     for(let i=0; i<allCards.length; i++){
         const number = allCards[i].getAttribute('data-number');
         allCards[i].classList.add("flipped");
@@ -128,46 +153,26 @@ function startingFlip(){
         allCards[i].setAttribute('data-state', 'shown');
     }
 
-    console.log(front);
-    console.log(back);
-
-    //flip to back
-    //allCards.classList.add("flipped");
-
+    // flip back over after two seconds 
     setTimeout(() => {
         for(let i=0; i<allCards.length; i++){
             allCards[i].classList.remove("flipped");
             allCards[i].setAttribute('data-state', 'hidden');
         }
-    }, 3000);
-    
+    }, 2000);
 }
 
+// check if the cards match
+function matchCheck(){
 
-window.onload = function() {
-    // Get modal elements
-    var modal = new bootstrap.Modal(document.getElementById('exampleModal')); // Initialize Bootstrap modal
-    var startGameBtn = document.getElementById('startGameBtn');
-    var playerNameInput = document.getElementById('playerName');
+}
 
-    // Display the modal when the page loads
-    modal.show();
+// 
+function endingModal(){
 
-    // Hide the modal and create player object when the 'Start Game' button is clicked
-    startGameBtn.onclick = function() {
-        var playerName = playerNameInput.value.trim();
-        if (playerName) {
-            var player = {
-                name: playerName,
-                fastestTime: null // Initialize fastest time as null
-            };
-            // Store the player object in localStorage
-            localStorage.setItem('player', JSON.stringify(player));
-        }
-        modal.hide(); // Hide the modal using Bootstrap's API
-        startTimer();
-        startingFlip();
-    };
-};
+}
 
-createRandomElements(6);
+function game(){
+    startTimer();
+    startingFlip();
+}
