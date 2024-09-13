@@ -146,12 +146,12 @@ function startingFlip(){
 
 window.onload = function() {
     // Get modal elements
-    var modal = document.getElementById('modal');
+    var modal = new bootstrap.Modal(document.getElementById('exampleModal')); // Initialize Bootstrap modal
     var startGameBtn = document.getElementById('startGameBtn');
     var playerNameInput = document.getElementById('playerName');
 
     // Display the modal when the page loads
-    modal.style.display = 'block';
+    modal.show();
 
     // Hide the modal and create player object when the 'Start Game' button is clicked
     startGameBtn.onclick = function() {
@@ -164,16 +164,9 @@ window.onload = function() {
             // Store the player object in localStorage
             localStorage.setItem('player', JSON.stringify(player));
         }
-        modal.style.display = 'none';
+        modal.hide(); // Hide the modal using Bootstrap's API
         startTimer();
         startingFlip();
-    };
-
-    // Optionally, hide the modal when the user clicks anywhere outside of the modal
-    window.onclick = function(event) {
-        if (event.target === modal) {
-            modal.style.display = 'none';
-        }
     };
 };
 
