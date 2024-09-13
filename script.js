@@ -90,9 +90,11 @@ function createRandomElements(numberOfBoxes){
     }
 }
 
+// function for when box is clicked
 container.addEventListener('click', function (event) {
 
-  const element = event.target.closest('.boxContainer');;
+  const element = event.target.closest('.boxContainer');
+  console.log(element);
 
   if (element){
     const state = element.getAttribute('data-state');
@@ -113,7 +115,34 @@ container.addEventListener('click', function (event) {
   }
 });
 
-createRandomElements(6);
+function startingFlip(){
+    const allCards = document.querySelectorAll(".boxContainer");
+    const front = document.querySelectorAll(".boxFront");
+    const back = document.querySelectorAll(".boxBack");
+
+    for(let i=0; i<allCards.length; i++){
+        const number = allCards[i].getAttribute('data-number');
+        allCards[i].classList.add("flipped");
+        front[i].textContent = '?';
+        back[i].textContent = number;
+        allCards[i].setAttribute('data-state', 'shown');
+    }
+
+    console.log(front);
+    console.log(back);
+
+    //flip to back
+    //allCards.classList.add("flipped");
+
+    setTimeout(() => {
+        for(let i=0; i<allCards.length; i++){
+            allCards[i].classList.remove("flipped");
+            allCards[i].setAttribute('data-state', 'hidden');
+        }
+    }, 3000);
+    
+}
+
 
 window.onload = function() {
     // Get modal elements
@@ -137,5 +166,8 @@ window.onload = function() {
         }
         modal.hide(); // Hide the modal using Bootstrap's API
         startTimer();
+        startingFlip();
     };
 };
+
+createRandomElements(6);
