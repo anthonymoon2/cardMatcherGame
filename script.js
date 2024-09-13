@@ -1,5 +1,33 @@
 const container = document.querySelector('.container');
 
+
+
+function startTimer(){
+    let timeRemaining = 120; //2 minutes in seconds
+    const timerDisplay = document.querySelector('#timer h3');
+
+    const timerInterval = setInterval(function(){
+
+        //Convert time into minutes and seconds for accurate display
+        const minutes = Math.floor(timeRemaining/60);
+        const seconds = timeRemaining % 60;
+
+        const formattedMinutes = minutes.toString().padStart(2, '0');
+        const formattedSeconds = seconds.toString().padStart(2, '0');
+
+        // Update the timer display
+        timerDisplay.textContent = `Time Left: ${formattedMinutes}:${formattedSeconds}`;
+
+        timeRemaining--;
+
+        if(timeRemaining == 0){
+            clearInterval(timerInterval);
+            timerDisplay.textContent = `Times up`;
+        }
+
+    }, 1000);
+};
+
 // box object
 const BoxElements = {
     boxes: [],
@@ -32,17 +60,37 @@ function createRandomElements(numberOfBoxes){
         numBoxArray.splice(randomIndex, 1);
         
         // create div box and add to container
+
         let boxElement = document.createElement("div");
         boxElement.setAttribute("data-number", randomNum);
         boxElement.setAttribute("data-state", "hidden");
         boxElement.classList.add("box");
         container.appendChild(boxElement);
 
+        let boxContainer = document.createElement("div");
+        let boxFront = document.createElement("div");
+        let boxBack = document.createElement("div");
+
+        // add front and back divs to box container
+        boxContainer.appendChild(boxFront);
+        boxContainer.appendChild(boxBack);
+
+        // add class list for css from style.css
+        boxContainer.classList.add("boxContainer");
+        boxFront.classList.add("boxFront");
+        boxBack.classList.add("boxBack");
+
+        boxContainer.setAttribute("data-number", randomNum);
+        boxContainer.setAttribute("data-state", "hidden");
+        container.appendChild(boxContainer);
+
+
         numberOfBoxes--;
     }
 }
 
 container.addEventListener('click', function (event) {
+
   const element = event.target;
 
   const state = element.getAttribute('data-state');
@@ -55,6 +103,26 @@ container.addEventListener('click', function (event) {
   } else {
     element.setAttribute('data-state', "hidden");
     element.textContent = '';
+
+  const element = event.target.closest('.boxContainer');
+
+  if (element.matches(".boxContainer")){
+    const state = element.getAttribute('data-state');
+    const number = element.getAttribute('data-number');
+    const front = element.querySelector('.boxFront');
+    const back = element.querySelector('.boxBack');
+  
+    if (state === 'hidden'){
+      element.classList.add("flipped");
+      front.textContent = '';
+      back.textContent = number;
+      element.setAttribute('data-state', "shown");
+    } else {
+      element.classList.remove("flipped");
+      front.textContent = '';
+      element.setAttribute('data-state', "hidden");
+    }
+
   }
 });
 
@@ -81,6 +149,7 @@ window.onload = function() {
             localStorage.setItem('player', JSON.stringify(player));
         }
         modal.style.display = 'none';
+        startTimer();
     };
 
     // Optionally, hide the modal when the user clicks anywhere outside of the modal
