@@ -3,7 +3,7 @@
 *::after {
   box-sizing: border-box;
 }
-
+/* theme colors */
 :root {
   --light-grey:#D9D9D9;
   --text-color: #FFFFFF;
@@ -13,7 +13,6 @@
 }
 
 body {
-  font-family: sans-serif;
   margin: 0px;
   padding: 0px;
   font-family: "Pixelify Sans", system-ui;
@@ -82,6 +81,7 @@ h1 {
   height: 100%;
   backface-visibility: hidden;
   background-color: rgb(103, 145, 157);
+
 }
 .boxBack{
   position: absolute;
@@ -109,7 +109,7 @@ h1 {
 
 /* Modal content */
 .modal-content {
-  background-color: #fefefe;
+  background-color: var(--dark-grey);
   margin: 10% auto;
   padding: 20px;
   border: 1px solid #888;
@@ -118,6 +118,7 @@ h1 {
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0,0,0,0.2); 
   text-align: center;
+  color:white;
 }
 
 /* Header inside modal */
@@ -143,9 +144,9 @@ h1 {
 
 /* Start button */
 .start-btn {
-  background-color: #093145;
+  background-color: var(--aqua);
   border: none;
-  color: white;
+  color: black;
   padding: 15px 32px;
   text-align: center;
   text-decoration: none;
@@ -154,10 +155,12 @@ h1 {
   margin: 4px 2px;
   cursor: pointer;
   border-radius: 4px;
+  font-family: "Pixelify Sans", system-ui;
 }
 
 .start-btn:hover {
-  background-color: #091145;
+  background-color: black;
+  color: var(--aqua);
 }
 
 

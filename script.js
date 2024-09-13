@@ -1,6 +1,7 @@
 const container = document.querySelector('.container');
 
 
+
 function startTimer(){
     let timeRemaining = 120; //2 minutes in seconds
     const timerDisplay = document.querySelector('#timer h3');
@@ -59,6 +60,13 @@ function createRandomElements(numberOfBoxes){
         numBoxArray.splice(randomIndex, 1);
         
         // create div box and add to container
+
+        let boxElement = document.createElement("div");
+        boxElement.setAttribute("data-number", randomNum);
+        boxElement.setAttribute("data-state", "hidden");
+        boxElement.classList.add("box");
+        container.appendChild(boxElement);
+
         let boxContainer = document.createElement("div");
         let boxFront = document.createElement("div");
         let boxBack = document.createElement("div");
@@ -76,11 +84,26 @@ function createRandomElements(numberOfBoxes){
         boxContainer.setAttribute("data-state", "hidden");
         container.appendChild(boxContainer);
 
+
         numberOfBoxes--;
     }
 }
 
 container.addEventListener('click', function (event) {
+
+  const element = event.target;
+
+  const state = element.getAttribute('data-state');
+  const number = element.getAttribute('data-number');
+
+  if (state === 'hidden'){
+    element.setAttribute('data-state', "shown");
+    element.textContent = number;
+    console.log(state);
+  } else {
+    element.setAttribute('data-state', "hidden");
+    element.textContent = '';
+
   const element = event.target.closest('.boxContainer');
 
   if (element.matches(".boxContainer")){
@@ -99,6 +122,7 @@ container.addEventListener('click', function (event) {
       front.textContent = '';
       element.setAttribute('data-state', "hidden");
     }
+
   }
 });
 
