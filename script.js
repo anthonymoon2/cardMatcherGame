@@ -30,7 +30,7 @@ function startTimer(){
 
 // box object
 const BoxElements = {
-    boxes: [],
+  boxes: [],
 }
 
 // randomizes numbers behind boxes and adds to container
@@ -80,6 +80,7 @@ function createRandomElements(numberOfBoxes){
         boxFront.classList.add("boxFront");
         boxBack.classList.add("boxBack");
 
+        boxFront.textContent = '?';
         boxContainer.setAttribute("data-number", randomNum);
         boxContainer.setAttribute("data-state", "hidden");
         container.appendChild(boxContainer);
@@ -91,22 +92,9 @@ function createRandomElements(numberOfBoxes){
 
 container.addEventListener('click', function (event) {
 
-  const element = event.target;
+  const element = event.target.closest('.boxContainer');;
 
-  const state = element.getAttribute('data-state');
-  const number = element.getAttribute('data-number');
-
-  if (state === 'hidden'){
-    element.setAttribute('data-state', "shown");
-    element.textContent = number;
-    console.log(state);
-  } else {
-    element.setAttribute('data-state', "hidden");
-    element.textContent = '';
-
-  const element = event.target.closest('.boxContainer');
-
-  if (element.matches(".boxContainer")){
+  if (element){
     const state = element.getAttribute('data-state');
     const number = element.getAttribute('data-number');
     const front = element.querySelector('.boxFront');
@@ -114,15 +102,14 @@ container.addEventListener('click', function (event) {
   
     if (state === 'hidden'){
       element.classList.add("flipped");
-      front.textContent = '';
+      front.textContent = '?';
       back.textContent = number;
       element.setAttribute('data-state', "shown");
     } else {
       element.classList.remove("flipped");
-      front.textContent = '';
+      front.textContent = '?';
       element.setAttribute('data-state', "hidden");
     }
-
   }
 });
 
