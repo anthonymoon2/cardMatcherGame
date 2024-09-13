@@ -92,22 +92,9 @@ function createRandomElements(numberOfBoxes){
 
 container.addEventListener('click', function (event) {
 
-  const element = event.target;
+  const element = event.target.closest('.boxContainer');;
 
-  const state = element.getAttribute('data-state');
-  const number = element.getAttribute('data-number');
-
-  if (state === 'hidden'){
-    element.setAttribute('data-state', "shown");
-    element.textContent = number;
-    console.log(state);
-  } else {
-    element.setAttribute('data-state', "hidden");
-    element.textContent = '';
-
-  const element = event.target.closest('.boxContainer');
-
-  if (element.matches(".boxContainer")){
+  if (element){
     const state = element.getAttribute('data-state');
     const number = element.getAttribute('data-number');
     const front = element.querySelector('.boxFront');
@@ -123,7 +110,6 @@ container.addEventListener('click', function (event) {
       front.textContent = '?';
       element.setAttribute('data-state', "hidden");
     }
-
   }
 });
 
