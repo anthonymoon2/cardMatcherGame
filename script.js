@@ -69,12 +69,13 @@ function deleteBoxes(){
 }
 
 let startTime;
+let timerInterval;
 function startTimer(){
     let timeRemaining = 120; //2 minutes in seconds
     const timerDisplay = document.querySelector('#timer h3');
     startTime = Date.now(); // Record the start time
 
-    const timerInterval = setInterval(function(){
+    timerInterval = setInterval(function(){
 
         //Convert time into minutes and seconds for accurate display
         const minutes = Math.floor(timeRemaining/60);
@@ -307,6 +308,7 @@ function endingModal(startTime){
     const endGameModal = new bootstrap.Modal(document.getElementById('endGameModal'));
     endGameModal.show();
 
+    clearInterval(timerInterval);
     // Add event listener for the "Play Again" button
     document.getElementById('playAgainBtn').addEventListener('click', function () {
         endGameModal.hide();
