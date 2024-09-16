@@ -1,8 +1,17 @@
 const container = document.querySelector('.container');
 
-window.onload = function() {
+// global variable to keep track of if two boxes are clicked
+let numBoxesClicked = 0;
+let firstCard;
+let secondCard;
+
+let numOfBoxes = 6;
+
+window.onload = start();
+
+function start() {
     // create boxes on load
-    createRandomElements(6);
+    createRandomElements(numOfBoxes);
 
     // Get modal elements
     var modal = new bootstrap.Modal(document.getElementById('exampleModal')); // Initialize Bootstrap modal
@@ -25,8 +34,9 @@ window.onload = function() {
         }
         modal.hide(); // Hide the modal using Bootstrap's API
 
-        // start game
-        game();
+        // start timer and flip
+        startTimer();
+        startingFlip();
     };
 };
 
@@ -57,6 +67,14 @@ function startTimer(){
 
     }, 1000);
 };
+
+function deleteElements(numOfBoxes){
+    const allCards = document.querySelectorAll(".boxContainer");
+
+    for (let i = 0; i < numOfBoxes; i++){
+        allCards[i].remove();
+    }
+} 
 
 // randomizes numbers behind boxes and adds to container
 function createRandomElements(numberOfBoxes){
@@ -107,11 +125,6 @@ function createRandomElements(numberOfBoxes){
         numberOfBoxes--;
     }
 }
-
-// global variable to keep track of if two boxes are clicked
-let numBoxesClicked = 0;
-let firstCard;
-let secondCard;
 
 // function for when box is clicked
 container.addEventListener('click', function (event) {
@@ -177,6 +190,8 @@ function matchCheck(){
         // remove from global cards
         firstCard = undefined;
         secondCard = undefined;
+
+        checkAllFlipped();
     } else { // if they don't match
         // reset number of boxes clicked
         setTimeout(() => {
@@ -223,6 +238,23 @@ function startingFlip(){
     }, 2000);
 }
 
+function checkAllFlipped(){
+    const allCards = document.querySelectorAll(".boxContainer");
+    let numCardsMatched = 0;
+
+    for(let i = 0; i < numOfBoxes; i++){
+        if(allCards[i].getAttribute("data-isMatched") === "false"){
+            break
+        }else{
+            numCardsMatched++;
+        }
+    }
+
+    if(numOfBoxes === numCardsMatched){
+        endingModal();
+    }
+}
+
 
 function endingModal(startTime){
     const endTime = Date.now();
@@ -245,11 +277,11 @@ function endingModal(startTime){
     // Add event listener for the "Play Again" button
     document.getElementById('playAgainBtn').addEventListener('click', function () {
         endGameModal.hide();
-        startTimer(); // Restart the timer
-    });
-}
 
-function game(){
-    startTimer();
-    startingFlip();
+        //delete current cards
+        deleteElements(numOfBoxes);
+
+        // start game again
+        start();
+    });
 }
