@@ -7,6 +7,7 @@ let numBoxesClicked = 0;
 let firstCard;
 let secondCard;
 let boxCount = 0;
+let currentPlayer = '';
 
 
 window.onload = start();
@@ -32,6 +33,8 @@ function start() {
     // Hide the modal and create player object when the 'Start Game' button is clicked
     startGameBtn.onclick = function() {
         var playerName = playerNameInput.value.trim();
+        // Set the global player name
+        currentPlayer = playerName;
         if (playerName) {
             // Retrieve existing players from localStorage or initialize an empty array
             var players = JSON.parse(localStorage.getItem('players')) || [];
@@ -288,6 +291,58 @@ function checkAllFlipped(){
     }
 }
 
+function updateBestTime(time) {
+    if (currentPlayer) {
+        // Retrieve existing players from localStorage
+        var players = JSON.parse(localStorage.getItem('players')) || [];
+
+        // Find the current player
+        var player = players.find(player => player.name === currentPlayer);
+
+        if (player) {
+            // Update the player's fastest time if it's better
+            if (player.fastestTime === null || time < player.fastestTime) {
+                player.fastestTime = time;
+                // Store the updated players array back in localStorage
+                localStorage.setItem('players', JSON.stringify(players));
+            }
+        }
+    }
+}
+
+function getTopThreePlayers() {
+    // Retrieve players from localStorage
+    var players = JSON.parse(localStorage.getItem('players')) || [];
+
+    // Sort players by fastest time in ascending order
+    players.sort((a, b) => (a.fastestTime || Infinity) - (b.fastestTime || Infinity));
+
+    // Get the top 3 players
+    return players.slice(0, 3);
+}
+
+
+// Function to update the leaderboard section in the modal
+function updateLeaderboard() {
+    const leaderboardList = document.getElementById('leaderboardList');
+    const topPlayers = getTopThreePlayers();
+
+    // Clear current leaderboard
+    leaderboardList.innerHTML = '';
+
+    // Populate leaderboard with top players
+    topPlayers.forEach((player, index) => {
+        const minutes = Math.floor(player.fastestTime / 60);
+        const seconds = player.fastestTime % 60;
+        const formattedMinutes = minutes.toString().padStart(2, '0');
+        const formattedSeconds = seconds.toString().padStart(2, '0');
+        
+        const listItem = document.createElement('li');
+        listItem.textContent = `${index + 1}. ${player.name}: ${formattedMinutes}:${formattedSeconds}`;
+        leaderboardList.appendChild(listItem);
+    });
+}
+
 
 //the end display for the game
 function endingModal(startTime){
@@ -303,6 +358,12 @@ function endingModal(startTime){
 
     // Update the modal content
     document.getElementById('formattedTime').textContent = `${formattedMinutes}:${formattedSeconds}`;
+
+    // Update the player's best time
+    updateBestTime(timeTakenInSeconds);
+
+    // Update the leaderboard
+    updateLeaderboard();
 
     // Show the modal
     const endGameModal = new bootstrap.Modal(document.getElementById('endGameModal'));
