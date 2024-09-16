@@ -94,7 +94,14 @@ h1 {
   transform: rotateY(180deg);
 }
 
+.modal-content {
+  color: var(--aqua);
+}
 
+.btn-primary {
+  background-color:#38D0CE;
+  border: none;
+}
 /* Input field */
 #playerName {
   padding: 10px;
@@ -106,7 +113,7 @@ h1 {
 
 /* Start button */
 .start-btn {
-  background-color: var(--aqua);
+  background-color: black!important;
   border: none;
   color: black;
   padding: 15px 32px;

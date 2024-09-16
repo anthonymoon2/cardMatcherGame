@@ -16,12 +16,24 @@ window.onload = function() {
     startGameBtn.onclick = function() {
         var playerName = playerNameInput.value.trim();
         if (playerName) {
-            var player = {
-                name: playerName,
-                fastestTime: null // Initialize fastest time as null
-            };
-            // Store the player object in localStorage
-            localStorage.setItem('player', JSON.stringify(player));
+            // Retrieve existing players from localStorage or initialize an empty array
+            var players = JSON.parse(localStorage.getItem('players')) || [];
+
+            // Check if the player already exists
+            var existingPlayer = players.find(player => player.name === playerName);
+
+            if (!existingPlayer) {
+                // Create a new player if it doesn't exist
+                var newPlayer = {
+                    name: playerName,
+                    fastestTime: null // Initialize fastest time as null
+                };
+                // Add the new player to the array
+                players.push(newPlayer);
+            }
+
+            // Store the updated players array back in localStorage
+            localStorage.setItem('players', JSON.stringify(players));
         }
         modal.hide(); // Hide the modal using Bootstrap's API
 
@@ -30,10 +42,12 @@ window.onload = function() {
     };
 };
 
+let startTime;
+
 function startTimer(){
     let timeRemaining = 120; //2 minutes in seconds
     const timerDisplay = document.querySelector('#timer h3');
-    const startTime = Date.now(); // Record the start time
+    startTime = Date.now(); // Record the start time
 
     const timerInterval = setInterval(function(){
 
@@ -61,8 +75,9 @@ function startTimer(){
 // randomizes numbers behind boxes and adds to container
 function createRandomElements(numberOfBoxes){
     let boxElement = document.createElement("div");
-    boxElement.setAttribute("data-number", "");
-    boxElement.setAttribute("data-state", "hidden");
+    //boxElement.setAttribute("data-number", "");
+    //boxElement.setAttribute("data-state", "hidden");
+    boxElement.setAttribute("data-ismatched", "false");
 
     // Divide by two because there will be two of each
     let numBoxes = numberOfBoxes/2;
@@ -74,8 +89,6 @@ function createRandomElements(numberOfBoxes){
         numBoxArray.push(numBoxes);
         numBoxes--;
     }
-
-    console.log(numBoxArray);
     
     while (numberOfBoxes !== 0){
         // Get a random number between 0 and the number of boxes left 
@@ -85,13 +98,6 @@ function createRandomElements(numberOfBoxes){
         numBoxArray.splice(randomIndex, 1);
         
         // create div box and add to container
-
-        let boxElement = document.createElement("div");
-        boxElement.setAttribute("data-number", randomNum);
-        boxElement.setAttribute("data-state", "hidden");
-        boxElement.classList.add("box");
-        container.appendChild(boxElement);
-
         let boxContainer = document.createElement("div");
         let boxFront = document.createElement("div");
         let boxBack = document.createElement("div");
@@ -108,6 +114,7 @@ function createRandomElements(numberOfBoxes){
         boxFront.textContent = '?';
         boxContainer.setAttribute("data-number", randomNum);
         boxContainer.setAttribute("data-state", "hidden");
+        boxContainer.setAttribute("data-ismatched", "false");
         container.appendChild(boxContainer);
 
 
@@ -115,30 +122,96 @@ function createRandomElements(numberOfBoxes){
     }
 }
 
+// global variable to keep track of if two boxes are clicked
+let numBoxesClicked = 0;
+let firstCard;
+let secondCard;
+
 // function for when box is clicked
 container.addEventListener('click', function (event) {
+  const element = event.target.closest(".boxContainer");
 
-  const element = event.target.closest('.boxContainer');
-  console.log(element);
+  if (element.getAttribute("data-ismatched") === "false"){
+    if (element){
+        const state = element.getAttribute('data-state');
+        const number = element.getAttribute('data-number');
+        const front = element.querySelector('.boxFront');
+        const back = element.querySelector('.boxBack');
+      
+        if (state === 'hidden'){
+          element.classList.add("flipped");
+          front.textContent = '?';
+          back.textContent = number;
+          element.setAttribute('data-state', "shown");
+        } else {
+          element.classList.remove("flipped");
+          front.textContent = '?';
+          element.setAttribute('data-state', "hidden");
+        }
 
-  if (element){
-    const state = element.getAttribute('data-state');
-    const number = element.getAttribute('data-number');
-    const front = element.querySelector('.boxFront');
-    const back = element.querySelector('.boxBack');
-  
-    if (state === 'hidden'){
-      element.classList.add("flipped");
-      front.textContent = '?';
-      back.textContent = number;
-      element.setAttribute('data-state', "shown");
-    } else {
-      element.classList.remove("flipped");
-      front.textContent = '?';
-      element.setAttribute('data-state', "hidden");
+          // update global variable of boxes clicked
+        numBoxesClicked++;
+
+        if (numBoxesClicked === 1){
+            firstCard = element;
+        } else {
+            secondCard = element;
+            matchCheck();
+        }
     }
+  } else{
+    console.log("This is already matched");
   }
 });
+
+// check if the cards match
+function matchCheck(){
+    // get the first card and second card's back value
+    const firstCardNumber = firstCard.getAttribute('data-number');
+    const secondCardNumber = secondCard.getAttribute('data-number');
+
+    //check if they match
+    if (firstCardNumber === secondCardNumber){
+        firstCard.classList.add("flipped");
+        firstCard.setAttribute('data-state', "shown");
+        secondCard.classList.add("flipped");
+        secondCard.setAttribute('data-state', "shown");
+
+        // change data set for ismatched so they can't be flipped again
+        firstCard.setAttribute("data-ismatched", "true");
+        secondCard.setAttribute("data-ismatched", "true");
+
+        console.log(firstCard.getAttribute("data-number"));
+        console.log(secondCard.getAttribute("data-number"));
+        console.log("matched!");
+
+        // reset number of boxes clicked
+        numBoxesClicked = 0;
+
+        // remove from global cards
+        firstCard = undefined;
+        secondCard = undefined;
+    } else { // if they don't match
+        // reset number of boxes clicked
+        setTimeout(() => {
+            firstCard.classList.remove("flipped");
+            firstCard.setAttribute('data-state', "hidden");
+            secondCard.classList.remove("flipped");
+            secondCard.setAttribute('data-state', "hidden");
+    
+            console.log(firstCard.getAttribute("data-number"));
+            console.log(secondCard.getAttribute("data-number"));
+            console.log("not matched!");
+    
+            // remove from global cards
+            firstCard = undefined;
+            secondCard = undefined;
+
+            numBoxesClicked = 0;
+        }, 400);
+    }
+    
+}
 
 // function which flips cards on start for two seconds
 function startingFlip(){
@@ -164,12 +237,27 @@ function startingFlip(){
     }, 2000);
 }
 
-// check if the cards match
-function matchCheck(){
+function checkAllFlipped(){
+    const allCards = document.querySelectorAll(".boxContainer");
+    let gameEnd = false;
+    let numCards = 6;
+    let numCardsMatched = 0;
 
+    for(let i = 0; i < numCards; i++){
+        if(allCards[i].getAttribute("data-isMatched") === "false"){
+            gameEnd = false;
+            break
+        }else{
+            numCardsMatched++;
+        }
+    }
+
+    if(numCards === numCardsMatched){
+        endingModal(startTime);
+    }
 }
 
-// 
+//the end display for the game
 function endingModal(startTime){
     const endTime = Date.now();
     const timeTakenInSeconds = Math.floor((endTime - startTime) / 1000); // Time taken in seconds
@@ -191,7 +279,7 @@ function endingModal(startTime){
     // Add event listener for the "Play Again" button
     document.getElementById('playAgainBtn').addEventListener('click', function () {
         endGameModal.hide();
-        startTimer(); // Restart the timer
+        game(); // Restart the game
     });
 }
 
