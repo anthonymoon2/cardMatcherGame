@@ -59,8 +59,9 @@ function startTimer(){
 // randomizes numbers behind boxes and adds to container
 function createRandomElements(numberOfBoxes){
     let boxElement = document.createElement("div");
-    boxElement.setAttribute("data-number", "");
-    boxElement.setAttribute("data-state", "hidden");
+    //boxElement.setAttribute("data-number", "");
+    //boxElement.setAttribute("data-state", "hidden");
+    boxElement.setAttribute("data-ismatched", "not");
 
     // Divide by two because there will be two of each
     let numBoxes = numberOfBoxes/2;
@@ -72,8 +73,6 @@ function createRandomElements(numberOfBoxes){
         numBoxArray.push(numBoxes);
         numBoxes--;
     }
-
-    console.log(numBoxArray);
     
     while (numberOfBoxes !== 0){
         // Get a random number between 0 and the number of boxes left 
@@ -83,13 +82,6 @@ function createRandomElements(numberOfBoxes){
         numBoxArray.splice(randomIndex, 1);
         
         // create div box and add to container
-
-        let boxElement = document.createElement("div");
-        boxElement.setAttribute("data-number", randomNum);
-        boxElement.setAttribute("data-state", "hidden");
-        boxElement.classList.add("box");
-        container.appendChild(boxElement);
-
         let boxContainer = document.createElement("div");
         let boxFront = document.createElement("div");
         let boxBack = document.createElement("div");
@@ -106,6 +98,7 @@ function createRandomElements(numberOfBoxes){
         boxFront.textContent = '?';
         boxContainer.setAttribute("data-number", randomNum);
         boxContainer.setAttribute("data-state", "hidden");
+        boxContainer.setAttribute("data-ismatched", "false");
         container.appendChild(boxContainer);
 
 
@@ -113,30 +106,94 @@ function createRandomElements(numberOfBoxes){
     }
 }
 
+// global variable to keep track of if two boxes are clicked
+let numBoxesClicked = 0;
+let firstCard;
+let secondCard;
+
 // function for when box is clicked
 container.addEventListener('click', function (event) {
+  const element = event.target.closest(".boxContainer");
 
-  const element = event.target.closest('.boxContainer');
-  console.log(element);
+  if (element.getAttribute("data-ismatched") === "false"){
+    if (element){
+        const state = element.getAttribute('data-state');
+        const number = element.getAttribute('data-number');
+        const front = element.querySelector('.boxFront');
+        const back = element.querySelector('.boxBack');
+      
+        if (state === 'hidden'){
+          element.classList.add("flipped");
+          front.textContent = '?';
+          back.textContent = number;
+          element.setAttribute('data-state', "shown");
+        } else {
+          element.classList.remove("flipped");
+          front.textContent = '?';
+          element.setAttribute('data-state', "hidden");
+        }
 
-  if (element){
-    const state = element.getAttribute('data-state');
-    const number = element.getAttribute('data-number');
-    const front = element.querySelector('.boxFront');
-    const back = element.querySelector('.boxBack');
-  
-    if (state === 'hidden'){
-      element.classList.add("flipped");
-      front.textContent = '?';
-      back.textContent = number;
-      element.setAttribute('data-state', "shown");
-    } else {
-      element.classList.remove("flipped");
-      front.textContent = '?';
-      element.setAttribute('data-state', "hidden");
+          // update global variable of boxes clicked
+        numBoxesClicked++;
+
+        if (numBoxesClicked === 1){
+            firstCard = element;
+        } else {
+            secondCard = element;
+            matchCheck();
+        }
     }
+  } else{
+    console.log("This is already matched");
   }
 });
+
+// check if the cards match
+function matchCheck(){
+    // get the first card and second card's back value
+    const firstCardNumber = firstCard.getAttribute('data-number');
+    const secondCardNumber = secondCard.getAttribute('data-number');
+
+    //check if they match
+    if (firstCardNumber === secondCardNumber){
+        firstCard.classList.add("flipped");
+        firstCard.setAttribute('data-state', "shown");
+        secondCard.classList.add("flipped");
+        secondCard.setAttribute('data-state', "shown");
+
+        // change data set for ismatched so they can't be flipped again
+        firstCard.setAttribute("data-ismatched", "true");
+        secondCard.setAttribute("data-ismatched", "true");
+
+        console.log(firstCard.getAttribute("data-number"));
+        console.log(secondCard.getAttribute("data-number"));
+        console.log("matched!");
+
+        // reset number of boxes clicked
+        numBoxesClicked = 0;
+
+        // remove from global cards
+        firstCard = undefined;
+        secondCard = undefined;
+    } else { // if they don't match
+        firstCard.classList.remove("flipped");
+        firstCard.setAttribute('data-state', "hidden");
+        secondCard.classList.remove("flipped");
+        secondCard.setAttribute('data-state', "hidden");
+
+        console.log(firstCard.getAttribute("data-number"));
+        console.log(secondCard.getAttribute("data-number"));
+        console.log("not matched!");
+
+        // reset number of boxes clicked
+        numBoxesClicked = 0;
+
+        // remove from global cards
+        firstCard = undefined;
+        secondCard = undefined;
+    }
+    
+}
 
 // function which flips cards on start for two seconds
 function startingFlip(){
@@ -160,11 +217,6 @@ function startingFlip(){
             allCards[i].setAttribute('data-state', 'hidden');
         }
     }, 2000);
-}
-
-// check if the cards match
-function matchCheck(){
-
 }
 
 // 
