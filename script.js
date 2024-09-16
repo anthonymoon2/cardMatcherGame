@@ -33,6 +33,7 @@ window.onload = function() {
 function startTimer(){
     let timeRemaining = 120; //2 minutes in seconds
     const timerDisplay = document.querySelector('#timer h3');
+    const startTime = Date.now(); // Record the start time
 
     const timerInterval = setInterval(function(){
 
@@ -51,6 +52,7 @@ function startTimer(){
         if(timeRemaining == 0){
             clearInterval(timerInterval);
             timerDisplay.textContent = `Times up`;
+            endingModal(startTime);
         }
 
     }, 1000);
@@ -168,8 +170,29 @@ function matchCheck(){
 }
 
 // 
-function endingModal(){
+function endingModal(startTime){
+    const endTime = Date.now();
+    const timeTakenInSeconds = Math.floor((endTime - startTime) / 1000); // Time taken in seconds
 
+    // Convert timeTakenInSeconds to minutes and seconds
+    const minutes = Math.floor(timeTakenInSeconds / 60);
+    const seconds = timeTakenInSeconds % 60;
+
+    const formattedMinutes = minutes.toString().padStart(2, '0');
+    const formattedSeconds = seconds.toString().padStart(2, '0');
+
+    // Update the modal content
+    document.getElementById('formattedTime').textContent = `${formattedMinutes}:${formattedSeconds}`;
+
+    // Show the modal
+    const endGameModal = new bootstrap.Modal(document.getElementById('endGameModal'));
+    endGameModal.show();
+
+    // Add event listener for the "Play Again" button
+    document.getElementById('playAgainBtn').addEventListener('click', function () {
+        endGameModal.hide();
+        startTimer(); // Restart the timer
+    });
 }
 
 function game(){
