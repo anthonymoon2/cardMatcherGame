@@ -16,12 +16,24 @@ window.onload = function() {
     startGameBtn.onclick = function() {
         var playerName = playerNameInput.value.trim();
         if (playerName) {
-            var player = {
-                name: playerName,
-                fastestTime: null // Initialize fastest time as null
-            };
-            // Store the player object in localStorage
-            localStorage.setItem('player', JSON.stringify(player));
+            // Retrieve existing players from localStorage or initialize an empty array
+            var players = JSON.parse(localStorage.getItem('players')) || [];
+
+            // Check if the player already exists
+            var existingPlayer = players.find(player => player.name === playerName);
+
+            if (!existingPlayer) {
+                // Create a new player if it doesn't exist
+                var newPlayer = {
+                    name: playerName,
+                    fastestTime: null // Initialize fastest time as null
+                };
+                // Add the new player to the array
+                players.push(newPlayer);
+            }
+
+            // Store the updated players array back in localStorage
+            localStorage.setItem('players', JSON.stringify(players));
         }
         modal.hide(); // Hide the modal using Bootstrap's API
 
@@ -30,10 +42,12 @@ window.onload = function() {
     };
 };
 
+let startTime;
+
 function startTimer(){
     let timeRemaining = 120; //2 minutes in seconds
     const timerDisplay = document.querySelector('#timer h3');
-    const startTime = Date.now(); // Record the start time
+    startTime = Date.now(); // Record the start time
 
     const timerInterval = setInterval(function(){
 
@@ -238,11 +252,11 @@ function checkAllFlipped(){
     }
 
     if(numCards === numCardsMatched){
-        endingModal();
+        endingModal(startTime);
     }
 }
 
-// 
+//the end display for the game
 function endingModal(startTime){
     const endTime = Date.now();
     const timeTakenInSeconds = Math.floor((endTime - startTime) / 1000); // Time taken in seconds
@@ -264,7 +278,7 @@ function endingModal(startTime){
     // Add event listener for the "Play Again" button
     document.getElementById('playAgainBtn').addEventListener('click', function () {
         endGameModal.hide();
-        startTimer(); // Restart the timer
+        game(); // Restart the game
     });
 }
 
