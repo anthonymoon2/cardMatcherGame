@@ -143,7 +143,6 @@ container.addEventListener('click', function (event) {
         } else {
             secondCard = element;
             matchCheck();
-            checkAllFlipped();
         }
     }
   } else{
@@ -179,21 +178,23 @@ function matchCheck(){
         firstCard = undefined;
         secondCard = undefined;
     } else { // if they don't match
-        firstCard.classList.remove("flipped");
-        firstCard.setAttribute('data-state', "hidden");
-        secondCard.classList.remove("flipped");
-        secondCard.setAttribute('data-state', "hidden");
-
-        console.log(firstCard.getAttribute("data-number"));
-        console.log(secondCard.getAttribute("data-number"));
-        console.log("not matched!");
-
         // reset number of boxes clicked
-        numBoxesClicked = 0;
+        setTimeout(() => {
+            firstCard.classList.remove("flipped");
+            firstCard.setAttribute('data-state', "hidden");
+            secondCard.classList.remove("flipped");
+            secondCard.setAttribute('data-state', "hidden");
+    
+            console.log(firstCard.getAttribute("data-number"));
+            console.log(secondCard.getAttribute("data-number"));
+            console.log("not matched!");
+    
+            // remove from global cards
+            firstCard = undefined;
+            secondCard = undefined;
 
-        // remove from global cards
-        firstCard = undefined;
-        secondCard = undefined;
+            numBoxesClicked = 0;
+        }, 400);
     }
     
 }
@@ -222,27 +223,7 @@ function startingFlip(){
     }, 2000);
 }
 
-function checkAllFlipped(){
-    const allCards = document.querySelectorAll(".boxContainer");
-    let gameEnd = false;
-    let numCards = 6;
-    let numCardsMatched = 0;
 
-    for(let i = 0; i < numCards; i++){
-        if(allCards[i].getAttribute("data-isMatched") === "false"){
-            gameEnd = false;
-            break
-        }else{
-            numCardsMatched++;
-        }
-    }
-
-    if(numCards === numCardsMatched){
-        endingModal();
-    }
-}
-
-// 
 function endingModal(startTime){
     const endTime = Date.now();
     const timeTakenInSeconds = Math.floor((endTime - startTime) / 1000); // Time taken in seconds
