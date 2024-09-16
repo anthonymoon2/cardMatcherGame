@@ -6,8 +6,8 @@ let allBoxes = document.querySelector('.boxContainer');
 let numBoxesClicked = 0;
 let firstCard;
 let secondCard;
-
 let boxCount = 0;
+
 
 window.onload = start();
 
@@ -96,6 +96,14 @@ function startTimer(){
 
     }, 1000);
 };
+
+function deleteElements(numOfBoxes){
+    const allCards = document.querySelectorAll(".boxContainer");
+
+    for (let i = 0; i < numOfBoxes; i++){
+        allCards[i].remove();
+    }
+} 
 
 // randomizes numbers behind boxes and adds to container
 function createRandomElements(numberOfBoxes){
@@ -279,6 +287,7 @@ function checkAllFlipped(){
     }
 }
 
+
 //the end display for the game
 function endingModal(startTime){
     const endTime = Date.now();
@@ -304,3 +313,4 @@ function endingModal(startTime){
         start();
     });
 }
+
