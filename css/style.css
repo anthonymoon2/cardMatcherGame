@@ -36,6 +36,8 @@ header {
   width: 70%;
   text-align: center;
   justify-content: center;
+  box-shadow: 0px 10px 20px rgb(30, 30, 30);
+  border-radius: 10px;
 }
 
 h1 {
@@ -52,6 +54,8 @@ h1 {
   flex-wrap: wrap;
   justify-content: space-between;
   align-items: flex-start;
+  box-shadow: 0px 10px 20px rgb(30, 30, 30);
+  border-radius: 10px;
 }
 
 .boxContainer {
@@ -72,6 +76,11 @@ h1 {
   transform-style: preserve-3d;
   transition: all 0.5s ease;
   background-color: var(--card-bg-color);
+  box-shadow: 0px 10px 5px rgb(66, 66, 66);
+  border-radius: 10px;
+}
+.boxContainer:hover{
+  transform: scale(1.05);
 }
 .boxContainer.flipped{
   transform: rotateY(180deg);
@@ -82,7 +91,7 @@ h1 {
   height: 100%;
   backface-visibility: hidden;
   background-color: rgb(103, 145, 157);
-
+  border-radius: 10px;
 }
 .boxBack{
   position: absolute;
@@ -92,6 +101,7 @@ h1 {
   background-color: rgb(91, 97, 99);
   color: white;
   transform: rotateY(180deg);
+  border-radius: 10px;
 }
 
 .modal-content {
