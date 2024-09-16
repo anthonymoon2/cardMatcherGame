@@ -63,7 +63,7 @@ function createRandomElements(numberOfBoxes){
     let boxElement = document.createElement("div");
     //boxElement.setAttribute("data-number", "");
     //boxElement.setAttribute("data-state", "hidden");
-    boxElement.setAttribute("data-ismatched", "not");
+    boxElement.setAttribute("data-ismatched", "false");
 
     // Divide by two because there will be two of each
     let numBoxes = numberOfBoxes/2;
@@ -143,6 +143,7 @@ container.addEventListener('click', function (event) {
         } else {
             secondCard = element;
             matchCheck();
+            checkAllFlipped();
         }
     }
   } else{
@@ -219,6 +220,26 @@ function startingFlip(){
             allCards[i].setAttribute('data-state', 'hidden');
         }
     }, 2000);
+}
+
+function checkAllFlipped(){
+    const allCards = document.querySelectorAll(".boxContainer");
+    let gameEnd = false;
+    let numCards = 6;
+    let numCardsMatched = 0;
+
+    for(let i = 0; i < numCards; i++){
+        if(allCards[i].getAttribute("data-isMatched") === "false"){
+            gameEnd = false;
+            break
+        }else{
+            numCardsMatched++;
+        }
+    }
+
+    if(numCards === numCardsMatched){
+        endingModal();
+    }
 }
 
 // 
