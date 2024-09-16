@@ -344,7 +344,7 @@ function updateLeaderboard() {
 }
 
 
-//the end display for the game
+//the end display
 function endingModal(startTime){
     const endTime = Date.now();
     const timeTakenInSeconds = Math.floor((endTime - startTime) / 1000); // Time taken in seconds
