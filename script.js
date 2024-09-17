@@ -9,6 +9,9 @@ let secondCard;
 let boxCount = 0;
 let currentPlayer = '';
 
+// music and sounds
+let music = new Audio('gameMusic.mp3');
+let dingSound = new Audio('dingSound.mp3');
 
 window.onload = start();
 
@@ -32,6 +35,7 @@ function start() {
 
     // Hide the modal and create player object when the 'Start Game' button is clicked
     startGameBtn.onclick = function() {
+        music.play();
         var playerName = playerNameInput.value.trim();
         // Set the global player name
         currentPlayer = playerName;
@@ -75,7 +79,7 @@ let startTime;
 let timerInterval;
 function startTimer(){
     let timeRemaining = 120; //2 minutes in seconds
-    const timerDisplay = document.querySelector('#timer h3');
+    const timerDisplay = document.querySelector('#timer h5');
     startTime = Date.now(); // Record the start time
 
     timerInterval = setInterval(function(){
@@ -204,6 +208,7 @@ function matchCheck(){
 
     //check if they match
     if (firstCardNumber === secondCardNumber){
+        dingSound.play();
         firstCard.classList.add("flipped");
         firstCard.setAttribute('data-state', "shown");
         secondCard.classList.add("flipped");
@@ -288,6 +293,7 @@ function checkAllFlipped(){
 
     if(numCards === numCardsMatched){
         endingModal(startTime);
+        music.pause();
     }
 }
 
