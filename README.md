@@ -21,5 +21,4 @@ AS A PLAYER I SHOULD SEE MY FASTEST TIME
 - Anthony Moon - https://github.com/anthonymoon2
 - Elijah Mcknight - https://github.com/Elimck11
 - Izaac Ramirez - https://github.com/HappyPup1402
-- Nina Le - https://github.com/neeners24
 
